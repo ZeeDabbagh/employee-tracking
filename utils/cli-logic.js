@@ -9,7 +9,7 @@ const viewAllDepts = (connection, questionsMenu) => {
 };
 
 const viewAllRoles = (connection, questionsMenu) => {
-    const queryStr = 'SELECT role.id, role.title, role.salary, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id'
+    const queryStr = 'SELECT role.id, role.title, role.salary, department.department_name AS department FROM role INNER JOIN department ON role.department_id = department.id'
     connection.query(queryStr, function(err, result){
         if (!result|| err ) { throw err}
         console.table(result)
@@ -18,7 +18,7 @@ const viewAllRoles = (connection, questionsMenu) => {
 };
 
 const viewAllEmployees = (connection, questionsMenu) => {
-    const queryStr =  `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+    const queryStr =  `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department_name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager
     FROM employee
     LEFT JOIN role ON employee.role_id = role.id
     LEFT JOIN department ON role.department_id = department.id
@@ -31,7 +31,7 @@ const viewAllEmployees = (connection, questionsMenu) => {
     })
 };
 
-const addDeptarmt = async (connection, questionsMenu) => {
+const addDepartment = async (connection, questionsMenu) => {
     const answer = await inquirer.prompt([
         {
             type: 'input',
@@ -40,7 +40,7 @@ const addDeptarmt = async (connection, questionsMenu) => {
         }
     ])
 
-    connection.query('INSERT INTO department SET ?', {name: answer.name}, function (err) {
+    connection.query('INSERT INTO department SET ?', {department_name: answer.name}, function (err) {
         if (err) {
             throw err
         }
@@ -52,7 +52,7 @@ const addDeptarmt = async (connection, questionsMenu) => {
 const addRole = async (connection, questionsMenu) => {
     const departments = await connection.promise().query('SELECT * FROM department');
     const departmentOptions = departments[0].map((department) => ({
-        name: department.name,
+        name: department.department_name,
         value: department.id
     }))
 
@@ -69,7 +69,7 @@ const addRole = async (connection, questionsMenu) => {
         },
         {
             type: 'list',
-            name: 'dept_id',
+            name: 'department_id',
             message:"Select a department for this role",
             choices: departmentOptions,
         }
@@ -115,13 +115,13 @@ const addEmployee = async (connection, questionsMenu) => {
         },
         {
             type: 'list',
-            name:'mgr_id',
+            name:'manager_id',
             message:'Assign Manager to your new Employee or select none.',
             choices: mgrOptions
         }
     ])
 
-    connection.query('INSERT INTO employee SET?', answers, function (err) {
+    connection.query('INSERT INTO employee SET ?', answers, function (err) {
         if(err) {throw err}
         console.log(`${answers['first_name']} ${answers['last_name']} added successfully`)
     })
@@ -135,7 +135,7 @@ const updateRole = async (connection, questionsMenu) => {
         value: employee.id
     }))
 
-    const roles = await connection.promise().query('SELECT * FROM roles')
+    const roles = await connection.promise().query('SELECT * FROM role')
     const roleOptions = roles[0].map((role) => ({
         name:role.title,
         value: role.id
@@ -144,19 +144,19 @@ const updateRole = async (connection, questionsMenu) => {
     const answers = await inquirer.prompt([
         {
             type: 'list',
-            name:'empId',
+            name:'employee_id',
             message:"Select an employee you want to modify:",
             choices: empOptions
         },
         {
             type: 'list',
-            name:'newRoleId',
+            name:'role_id',
             message:"Update their current role with a different one",
             choices: roleOptions
         }
     ])
 
-    connection.query('UPDATE employee set newRoleId = ? WHERE id = ?', [answers.newRoleId, answers.empId], function (err) {
+    connection.query('UPDATE employee SET role_id = ? WHERE id = ?', [answers.role_id, answers.employee_id], function (err) {
         if (err) {throw err}
         console.log('Employee role updated!')
         return questionsMenu()
@@ -167,7 +167,7 @@ module.exports = {
     viewAllDepts,
     viewAllRoles,
     viewAllEmployees,
-    addDeptarmt,
+    addDepartment,
     addRole,
     addEmployee,
     updateRole,

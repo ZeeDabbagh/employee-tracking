@@ -1,1 +1,4 @@
 .env
+/node_modules
+/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr
+package-lock.json

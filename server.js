@@ -1,4 +1,4 @@
-const mysql = require('mysql12')
+const mysql = require('mysql2')
 const inquirer = require('inquirer')
 const dotenv = require('dotenv')
 
@@ -8,7 +8,7 @@ const {
     viewAllDepts,
     viewAllRoles,
     viewAllEmployees,
-    addDeptarmt,
+    addDepartment,
     addRole,
     addEmployee,
     updateRole,
@@ -28,7 +28,7 @@ connection.connect((err) => {
 
 const questionsMenu = () => {
     inquirer
-        .createPromptModule([
+        .prompt([
             {
                 type:'list',
                 name:"action",
@@ -49,29 +49,30 @@ const questionsMenu = () => {
         .then((responses) => {
             switch(responses["action"]){
                 case'View all departments':
-                return  viewAllDepts()
+                return  viewAllDepts(connection, questionsMenu)
                 break
                 case'View all roles':
-                return   viewAllRoles()
+                return   viewAllRoles(connection, questionsMenu)
                 break
                 case'View all employees':
-                return     viewAllEmployees()
+                return     viewAllEmployees(connection, questionsMenu)
                 break
                 case"Add a department":
-                return addDeptarmt()
+                return addDepartment(connection, questionsMenu)
                 break
                 case"Add a role":
-                return      addRole()
+                return      addRole(connection, questionsMenu)
                 break
                 case"Add an employee":
-                return       addEmployee()
+                return       addEmployee(connection, questionsMenu)
                 break
                 case"Update and employee's role":
-                updateRole()
+                updateRole(connection, questionsMenu)
                 break
                 case "Exit":
-                connection.end()
                 console.log("Goodbye!")
+                process.exit()
+                
         }})
         
 }
