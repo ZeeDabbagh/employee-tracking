@@ -1,7 +1,7 @@
 const inquirer = require('inquirer')
 
 const viewAllDepts = (connection, questionsMenu) => {
-    connection.query("SELECT * FROM departments", function(err, result){
+    connection.query("SELECT * FROM department", function(err, result){
         if(!result || err){ throw err }
         console.table(result);
         return questionsMenu()

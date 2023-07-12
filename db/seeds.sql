@@ -1,38 +1,26 @@
-INSERT INTO department (department_name)
-VALUES 
-('Executive Board'),
+INSERT INTO department (department_name) VALUES
+('Sales'),
 ('Marketing'),
-('Human Resources'),
 ('Finance'),
-('Engineering'),
-('Information Technology'),
-('Customer Relations'),
-('Research and Development'),
-('Legal'),
-('Maintenance');
+('Human Resources');
 
-INSERT INTO role (title, salary, department_id)
-VALUES 
-('Chief Executive Officer', 555000.00, 1),
-('Marketing Manager', 125000.00, 2),
-('HR Director', 189000.00, 3),
-('Finance Head', 145000.00, 4),
-('Senior Engineer', 185000.00, 5),
-('IT Manager', 125000.00, 6),
-('Customer Relations Manager', 75000.00, 7),
-('Research and Development Manager ', 185000.00, 8),
-('Legal Manager', 95000.00, 9),
-('Maintenance Manager', 135000.00, 10);
+INSERT INTO role (title, salary, department_id) VALUES
+('Sales Manager', 70000.00, 1),
+('Sales Representative', 50000.00, 1),
+('Marketing Manager', 65000.00, 2),
+('Marketing Coordinator', 45000.00, 2),
+('Financial Analyst', 60000.00, 3),
+('Accountant', 55000.00, 3),
+('HR Manager', 68000.00, 4),
+('HR Assistant', 40000.00, 4);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES
-('Tom', 'Brady', 1, 1),
-('Thomas', 'The Tank Engine', 2, 2),
-('Thomas', 'Calle', 3, 3),
-('Thomas', 'Shelby', 4, 4),
-('Thomas', 'Hobbes', 5, 5),
-('Tom', 'Hanks', 6, 6),
-('Tom', 'Holland', 7, 7),
-('Tom', 'Ford', 8, 8),
-('Thomas', 'The Apostle', 9, 9),
-('Tom', 'Cruise', 10, 10);
+INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES
+('John', 'Doe', 1, NULL),
+('Jane', 'Smith', 2, 1),
+('Michael', 'Johnson', 3, 1),
+('Emily', 'Williams', 4, 2),
+('David', 'Brown', 5, 3),
+('Sarah', 'Taylor', 6, 3),
+('Thomas', 'Miller', 7, 4),
+('Olivia', 'Anderson', 8, 4);
+
