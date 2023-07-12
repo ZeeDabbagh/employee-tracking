@@ -4,9 +4,19 @@ const dotenv = require('dotenv')
 
 dotenv.config();
 
+const {
+    viewAllDepts,
+    viewAllRoles,
+    viewAllEmployees,
+    addDeptarmt,
+    addRole,
+    addEmployee,
+    updateRole,
+} = require('./utils/cli-logic')
+
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: process.env.USER,
+    user: process.env.DB_USER,
     database: process.env.DB_NAME
 });
 
@@ -36,7 +46,32 @@ const questionsMenu = () => {
 
             }
         ])
-        // .then(response) => {
-
-        // }
+        .then((responses) => {
+            switch(responses["action"]){
+                case'View all departments':
+                return  viewAllDepts()
+                break
+                case'View all roles':
+                return   viewAllRoles()
+                break
+                case'View all employees':
+                return     viewAllEmployees()
+                break
+                case"Add a department":
+                return addDeptarmt()
+                break
+                case"Add a role":
+                return      addRole()
+                break
+                case"Add an employee":
+                return       addEmployee()
+                break
+                case"Update and employee's role":
+                updateRole()
+                break
+                case "Exit":
+                connection.end()
+                console.log("Goodbye!")
+        }})
+        
 }
